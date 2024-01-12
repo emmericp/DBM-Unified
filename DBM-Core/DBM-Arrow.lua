@@ -1,4 +1,5 @@
 -- This file uses models and textures taken from TomTom. The 3D arrow model was created by Guillotine (curse.guillotine@gmail.com) and 2D minimap textures by Cladhaire.
+---@diagnostic disable: inject-field
 
 local L = DBM_CORE_L
 
@@ -212,7 +213,7 @@ local function show(runAway, x, y, distance, time, legacy, _, title, customAreaI
 	else
 		targetType = "fixed"
 		if legacy and x >= 0 and x <= 100 and y >= 0 and y <= 100 then
-			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(customAreaID) or C_Map.GetBestMapForUnit("player"), CreateVector2D(x / 100, y / 100))
+			local _, temptable = C_Map.GetWorldPosFromMapPos(tonumber(customAreaID) or C_Map.GetBestMapForUnit("player") or 0, CreateVector2D(x / 100, y / 100))
 			x, y = temptable.x, temptable.y
 		end
 		targetX, targetY = x, y

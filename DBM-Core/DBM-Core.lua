@@ -72,6 +72,13 @@ local function showRealDate(curseDate)
 	end
 end
 
+---@class DBM
+---@field CreateModLocalization fun(self: DBM, modName: string): ModLocalization
+---@field GetModLocalization fun(self: DBM, modName: string): ModLocalization
+---@field Flash DBMFlash
+---@field HudMap DBMHudMap
+---@field Nameplate DBMNameplateFrame
+---@field RangeCheck DBMRangeCheck
 local DBM = {
 	Revision = parseCurseDate("@project-date-integer@"),
 }
@@ -427,7 +434,7 @@ private.statusGuildDisabled, private.statusWhisperDisabled, private.raidIconsDis
 --------------
 local bossModPrototype = {}
 local mainFrame = CreateFrame("Frame", "DBMMainFrame")
-local playerName = UnitName("player")
+local playerName = UnitName("player") or error("failed to get player name")
 local playerLevel = UnitLevel("player")
 local playerRealm = GetRealmName()
 local normalizedPlayerRealm = playerRealm:gsub("[%s-]+", "")
@@ -602,7 +609,6 @@ end
 -----------------
 --  Libraries  --
 -----------------
-local LibStub = _G["LibStub"]
 local LibSpec
 do
 	if isRetail and LibStub then
@@ -2587,6 +2593,9 @@ do
 		return (raid[name] and raid[name].subgroup) or 0
 	end
 
+	---@param name string
+	---@return boolean
+	---@overload fun(self: DBM): table
 	function DBM:GetRaidRoster(name)
 		if name then
 			return raid[name] ~= nil
@@ -6306,7 +6315,7 @@ end
 
 function DBM:GetDungeonInfo(id)
 	local temp = GetDungeonInfo(id)
-	return type(temp) == "table" and temp.name or temp
+	return type(temp) == "table" and temp.name or tostring(temp)
 end
 
 --Handle new spell name requesting with wrapper, to make api changes easier to handle
@@ -6611,7 +6620,7 @@ do
 			self:Debug("Restoring Sound_EnableSFX CVAR")
 		end
 		if self.Options.RestoreSettingQuestTooltips then
-			SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips)
+			SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips) ---@diagnostic disable-line: param-type-mismatch
 			self.Options.RestoreSettingQuestTooltips = nil
 			self:Debug("Restoring showQuestTrackingTooltips CVAR")
 		end
@@ -6771,7 +6780,7 @@ do
 			end
 		elseif toggle == 0 then
 			if self.Options.RestoreSettingQuestTooltips then
-				SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips)
+				SetCVar("showQuestTrackingTooltips", self.Options.RestoreSettingQuestTooltips) ---@diagnostic disable-line: param-type-mismatch
 				self.Options.RestoreSettingQuestTooltips = nil
 				self:Debug("Restoring Quest Tooltip CVAR")
 			end
@@ -8388,6 +8397,7 @@ end
 -----------------------
 --  Announce Object  --
 -----------------------
+---@diagnostic disable: inject-field
 do
 	local frame = CreateFrame("Frame", "DBMWarning", UIParent)
 	local font1u = CreateFrame("Frame", "DBMWarning1Updater", UIParent)
@@ -10259,6 +10269,8 @@ do
 		end
 	end
 end
+---@diagnostic enable: inject-field
+
 
 --------------------
 --  Timer Object  --

@@ -3,6 +3,7 @@ local L = DBM_CORE_L
 local frame, fontstring, fontstringFooter, editBox, urlText
 
 local function CreateOurFrame()
+	---@class DBMUpdateFrame: Frame, BackdropTemplate
 	frame = CreateFrame("Frame", "DBMUpdateReminder", UIParent, "BackdropTemplate")
 	frame:SetFrameStrata("FULLSCREEN_DIALOG") -- yes, this isn't a fullscreen dialog, but I want it to be in front of other DIALOG frames (like DBM GUI which might open this frame...)
 	frame:SetWidth(430)
@@ -46,7 +47,7 @@ local function CreateOurFrame()
 	editBox:SetHeight(32)
 	editBox:SetWidth(250)
 	editBox:SetPoint("TOP", fontstring, "BOTTOM", 0, -4)
-	editBox:SetFontObject("GameFontHighlight")
+	editBox:SetFontObject(GameFontHighlight)
 	editBox:SetTextInsets(0, 0, 0, 1)
 	editBox:SetFocus()
 	editBox:SetScript("OnTextChanged", function(self)
@@ -61,8 +62,8 @@ local function CreateOurFrame()
 	button:SetHeight(24)
 	button:SetWidth(75)
 	button:SetPoint("BOTTOM", 0, 13)
-	button:SetNormalFontObject("GameFontNormal")
-	button:SetHighlightFontObject("GameFontHighlight")
+	button:SetNormalFontObject(GameFontNormal)
+	button:SetHighlightFontObject(GameFontHighlight)
 	button:SetNormalTexture(button:CreateTexture(nil, nil, "UIPanelButtonUpTexture"))
 	button:SetPushedTexture(button:CreateTexture(nil, nil, "UIPanelButtonDownTexture"))
 	button:SetHighlightTexture(button:CreateTexture(nil, nil, "UIPanelButtonHighlightTexture"))
@@ -73,6 +74,7 @@ local function CreateOurFrame()
 
 end
 
+---@diagnostic disable-next-line:inject-field
 function DBM:ShowUpdateReminder(newVersion, newRevision, text, url)
 	urlText = url or "https://github.com/DeadlyBossMods/DeadlyBossMods/wiki"
 	if not frame then

@@ -19,8 +19,11 @@ do
 	}
 	local hasCached = false
 	local cachedTable
-	DBM.Counts = counts -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	---@diagnostic disable-next-line:inject-field
+	DBM.Counts = counts
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:GetCountSounds()
 		if not hasCached then
 			cachedTable = {unpack(counts)}
@@ -28,6 +31,7 @@ do
 		return cachedTable
 	end
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:AddCountSound(text, value, path, max)
 		tinsert(counts, {
 			text	= text,
@@ -48,8 +52,11 @@ do
 	}
 	local hasCached = false
 	local cachedTable
+	---@deprecated Use new utility functions
+	---@diagnostic disable-next-line:inject-field
 	DBM.Victory = victory -- @Deprecated: Use new utility functions
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:GetVictorySounds()
 		if not hasCached then
 			cachedTable = {unpack(victory)}
@@ -57,6 +64,7 @@ do
 		return cachedTable
 	end
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:AddVictorySound(text, value, length)
 		tinsert(victory, {
 			text	= text,
@@ -105,8 +113,11 @@ do
 
 	local hasCached = false
 	local cachedTable
+	---@deprecated Use new utility functions
+	---@diagnostic disable-next-line:inject-field
 	DBM.Defeat = defeat -- @Deprecated: Use new utility functions
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:GetDefeatSounds()
 		if not hasCached then
 			cachedTable = {unpack(defeat)}
@@ -114,6 +125,7 @@ do
 		return cachedTable
 	end
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:AddDefeatSound(text, value, length)
 		tinsert(defeat, {
 			text	= text,
@@ -151,8 +163,11 @@ do
 
 	local hasCached = false
 	local cachedTable
+	---@deprecated Use new utility functions
+	---@diagnostic disable-next-line:inject-field
 	DBM.DungeonMusic = dungeonMusic -- @Deprecated: Use new utility functions
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:GetDungeonMusic()
 		if not hasCached then
 			cachedTable = {unpack(dungeonMusic)}
@@ -160,6 +175,7 @@ do
 		return cachedTable
 	end
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:AddDungeonMusic(text, value, length)
 		tinsert(dungeonMusic, {
 			text	= text,
@@ -198,8 +214,11 @@ do
 
 	local hasCached = false
 	local cachedTable
-	DBM.BattleMusic = battleMusic -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	---@diagnostic disable-next-line:inject-field
+	DBM.BattleMusic = battleMusic
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:GetBattleMusic()
 		if not hasCached then
 			cachedTable = {unpack(battleMusic)}
@@ -207,6 +226,7 @@ do
 		return cachedTable
 	end
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:AddBattleMusic(text, value, length)
 		tinsert(battleMusic, {
 			text	= text,
@@ -231,8 +251,11 @@ do
 	}
 	local hasCached = false
 	local cachedTable
-	DBM.Music = music -- @Deprecated: Use new utility functions
+	---@deprecated Use new utility functions
+	---@diagnostic disable-next-line:inject-field
+	DBM.Music = music
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:GetMusic()
 		if not hasCached then
 			cachedTable = {unpack(music)}
@@ -240,6 +263,7 @@ do
 		return cachedTable
 	end
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:AddMusic(text, value, length)
 		tinsert(music, {
 			text	= text,

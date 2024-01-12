@@ -2,13 +2,13 @@ local _, private = ...
 
 local L = DBM_CORE_L
 
-local LibStub = _G["LibStub"]
-
 if not LibStub or not LibStub("LibDataBroker-1.1", true) or not LibStub("LibDBIcon-1.0") then
+	---@diagnostic disable-next-line:inject-field
 	function DBM:ToggleMinimapButton() end -- NOOP
 	return
 end
 
+---@diagnostic disable-next-line:missing-fields
 local dataBroker = LibStub and LibStub("LibDataBroker-1.1"):NewDataObject("DBM", {
 	type	= "launcher",
 	label	= "DBM",
@@ -30,6 +30,7 @@ if dataBroker then
 	end
 
 	function dataBroker.OnTooltipShow(GameTooltip)
+		---@cast GameTooltip GameTooltip
 		GameTooltip:SetText(L.MINIMAP_TOOLTIP_HEADER, 1, 1, 1)
 		GameTooltip:AddLine(("%s (%s)"):format(DBM.DisplayVersion, DBM:ShowRealDate(DBM.Revision)), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
 		GameTooltip:AddLine(" ")
@@ -42,6 +43,7 @@ end
 do
 	local LibDBIcon = LibStub("LibDBIcon-1.0")
 
+	---@diagnostic disable-next-line:inject-field
 	function DBM:ToggleMinimapButton()
 		DBM_MinimapIcon.hide = not DBM_MinimapIcon.hide
 		if DBM_MinimapIcon.hide then

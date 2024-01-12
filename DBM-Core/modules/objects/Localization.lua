@@ -46,6 +46,13 @@ local defaultMiscLocalization = {
 	__index = {}
 }
 
+---@class ModLocalization
+---@field general table<string, string>
+---@field warnings table<string, string>
+---@field timers table<string, string>
+---@field options table<string, string>
+---@field cats table<string, string>
+---@field miscStrings table<string, string>
 local modLocalizationPrototype = {}
 
 function modLocalizationPrototype:SetGeneralLocalization(t)

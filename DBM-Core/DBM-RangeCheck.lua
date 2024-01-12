@@ -1,7 +1,6 @@
----------------
---  Globals  --
----------------
-DBM.RangeCheck = {}
+---@class DBMRangeCheck
+local rangeCheck = {}
+DBM.RangeCheck = rangeCheck
 
 --------------
 --  Locals  --
@@ -20,7 +19,6 @@ local function UnitPhaseReasonHack(uId)
 end
 
 local L = DBM_CORE_L
-local rangeCheck = DBM.RangeCheck
 local mainFrame = CreateFrame("Frame")
 local textFrame, radarFrame, updateIcon, updateRangeFrame, initializeDropdown
 local RAID_CLASS_COLORS = _G["CUSTOM_CLASS_COLORS"] or RAID_CLASS_COLORS -- For Phanx' Class Colors
@@ -471,6 +469,7 @@ end
 --  Create the frame  --
 ------------------------
 local function createTextFrame()
+	---@class DBMRangeCheckFrame: Frame, BackdropTemplate
 	textFrame = CreateFrame("Frame", "DBMRangeCheck", UIParent, "BackdropTemplate")
 	textFrame:SetFrameStrata("DIALOG")
 	textFrame.backdropInfo = {
@@ -506,6 +505,7 @@ local function createTextFrame()
 		end
 	end)
 
+	---@class DBMRangeCheckTitleFrame: FontString
 	local text = textFrame:CreateFontString(nil, "OVERLAY", "GameTooltipText")
 	text:SetSize(128, 15)
 	text:SetPoint("BOTTOMLEFT", textFrame, "TOPLEFT")
@@ -542,6 +542,7 @@ local function createTextFrame()
 end
 
 local function createRadarFrame()
+	---@class DBMRangeCheckRadarFrame: Frame
 	radarFrame = CreateFrame("Frame", "DBMRangeCheckRadar", UIParent)
 	radarFrame:SetFrameStrata("DIALOG")
 	radarFrame:SetPoint(DBM.Options.RangeFrameRadarPoint, UIParent, DBM.Options.RangeFrameRadarPoint, DBM.Options.RangeFrameRadarX, DBM.Options.RangeFrameRadarY)

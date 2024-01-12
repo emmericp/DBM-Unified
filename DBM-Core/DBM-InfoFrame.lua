@@ -1,14 +1,16 @@
 ---------------
 --  Globals  --
 ---------------
-DBM.InfoFrame = {}
+---@class DBMInfoFrame
+local infoFrame = {}
+DBM.InfoFrame = infoFrame ---@diagnostic disable-line: inject-field
 
 -------------------
 -- Local Globals --
 -------------------
 local isRetail = WOW_PROJECT_ID == (WOW_PROJECT_MAINLINE or 1)
 
-local DDM = _G["LibStub"]:GetLibrary("LibDropDownMenu")
+local DDM = LibStub:GetLibrary("LibDropDownMenu")
 local UIDropDownMenu_AddButton, UIDropDownMenu_Initialize, ToggleDropDownMenu = DDM.UIDropDownMenu_AddButton, DDM.UIDropDownMenu_Initialize, DDM.ToggleDropDownMenu
 
 local DBM = DBM
@@ -35,12 +37,12 @@ end
 --------------
 --  Locals  --
 --------------
-local infoFrame = DBM.InfoFrame
 local frame, initializeDropdown, currentMapId, currentEvent, createFrame
 local maxLines, modLines, maxCols, modCols, prevLines = 5, 5, 1, 1, 0
 local sortMethod = 1--1 Default, 2 SortAsc, 3 GroupId
 local lines, sortedLines, icons, value = {}, {}, {}, {}
 local playerName = UnitName("player")
+---@cast playerName string
 
 ---------------------
 --  Dropdown Menu  --
@@ -232,6 +234,7 @@ end
 --  Create the frame  --
 ------------------------
 function createFrame()
+	---@class DBMInfoFrameFrame: Frame, BackdropTemplate
 	frame = CreateFrame("Frame", "DBMInfoFrame", UIParent, "BackdropTemplate")
 	frame:Hide()
 	frame:SetFrameStrata("DIALOG")
@@ -537,7 +540,7 @@ local function updateMultiEnemyAbsorb()
 		local uId = "boss" .. i
 		if UnitExists(uId) then
 			local targetGUID = UnitGUID(uId)
-			if guidTable[targetGUID] and not guidTracked[targetGUID] then
+			if targetGUID and guidTable[targetGUID] and not guidTracked[targetGUID] then
 				guidTracked[targetGUID] = true
 				local absorbAmount
 				if spellInput then -- Get specific spell absorb
@@ -561,7 +564,7 @@ local function updateMultiEnemyAbsorb()
 		end
 		local uId = unitId .. "target"
 		local targetGUID = UnitGUID(unitId)
-		if guidTable[targetGUID] and not guidTracked[targetGUID] then
+		if targetGUID and guidTable[targetGUID] and not guidTracked[targetGUID] then
 			guidTracked[targetGUID] = true
 			local absorbAmount
 			if spellInput then -- Get specific spell absorb
@@ -666,7 +669,7 @@ local function updateGoodPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -684,7 +687,7 @@ local function updateBadPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) then
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -740,7 +743,7 @@ local function updateReverseBadPlayerDebuffs()
 	local spellInput = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			if not DBM:UnitDebuff(uId, spellInput) and not UnitIsDeadOrGhost(uId) and not DBM:UnitBuff(uId, 27827) then--27827 Spirit of Redemption. This particular info frame wants to ignore this
 				lines[DBM:GetUnitFullName(uId)] = ""
@@ -782,7 +785,7 @@ local function updatePlayerAggro()
 	local aggroType = value[1]
 	local tankIgnored = value[2]
 	for uId in DBM:GetGroupMembers() do
-		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, 1)) then
+		if tankIgnored and (UnitGroupRolesAssigned(uId) == "TANK" or GetPartyAssignment("MAINTANK", uId, true)) then
 		else
 			local currentThreat = UnitThreatSituation(uId) or 0
 			if currentThreat >= aggroType then
